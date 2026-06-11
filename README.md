@@ -4,6 +4,11 @@
 
 ### *Unleash the fire within your music*
 
+<p align="center">
+  <img src="assets/preview1.png" width="48%">
+  <img src="assets/preview2.png" width="48%">
+</p>
+
 ![Spicetify](https://img.shields.io/badge/Spicetify-Compatible-FF3D00?style=flat-square&logo=spotify&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-CC2000?style=flat-square)
 ![Version](https://img.shields.io/badge/Version-2.0.0-FF5722?style=flat-square)
