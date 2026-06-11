@@ -1,0 +1,233 @@
+/* ============================================================
+   EMBER THEME
+   AMOLED Black + #FF3D00 Burnt Orange-Red
+   ============================================================ */
+
+/* === 1. ROOT VARIABLES === */
+:root {
+  --spice-main:               #080808;
+  --spice-sidebar:            #0C0C0C;
+  --spice-player:             #0F0F0F;
+  --spice-card:               #141414;
+  --spice-shadow:             #000000;
+  --spice-selected-row:       #2A0800;
+  --spice-button:             #FF3D00;
+  --spice-button-active:      #CC2000;
+  --spice-button-disabled:    #3A3A3A;
+  --spice-tab-active:         #FF3D00;
+  --spice-notification:       #FF3D00;
+  --spice-notification-error: #E91429;
+  --spice-misc:               #FF3D00;
+  --spice-text:               #FFFFFF;
+  --spice-subtext:            #A0A0A0;
+  --spice-sidebar-text:       #FFFFFF;
+}
+
+/* === 2. PLAYER BAR AT TOP === */
+.Root__now-playing-bar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 96px !important;
+  z-index: 10000 !important;
+  background: linear-gradient(to bottom, #111111, #080808) !important;
+  border-bottom: 1px solid rgba(255, 61, 0, 0.15) !important;
+  border-top: none !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8) !important;
+  overflow: visible !important;
+  -webkit-app-region: drag !important;
+}
+
+/* Ensure interactive elements are clickable */
+.Root__now-playing-bar button,
+.Root__now-playing-bar a,
+.Root__now-playing-bar input,
+.Root__now-playing-bar [role="button"],
+.Root__now-playing-bar [data-testid],
+.Root__now-playing-bar svg,
+.main-nowPlayingBar-left *,
+#ember-seek-overlay {
+  -webkit-app-region: no-drag !important;
+}
+
+/* Push main content down */
+.Root__top-container {
+  margin-top: 96px !important;
+  height: calc(100vh - 96px) !important;
+}
+
+[data-testid="now-playing-bar"],
+[class*="nowPlayingBar-container"] {
+  background-color: #0A0A0A !important;
+  height: 100% !important;
+}
+
+/* === 3. CENTER CONTAINER === */
+.main-nowPlayingBar-center,
+[class*="nowPlayingBar-center"] {
+  position: relative !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+
+/* === 3b. RIGHT CONTAINER === */
+.main-nowPlayingBar-right,
+[class*="nowPlayingBar-right"] {
+  padding-right: 140px !important;
+}
+
+/* === 4. HIDE NATIVE SEEKBAR === */
+/* Progress bar track */
+body.ember-loaded [data-testid="playback-progressbar"],
+body.ember-loaded .main-playbackBar-playbackBar,
+body.ember-loaded [class*="playbackBar-playbackBar"] {
+  display: none !important;
+  height: 0 !important;
+  visibility: hidden !important;
+  overflow: hidden !important;
+}
+
+/* Timestamps */
+body.ember-loaded .main-playbackBar-progressTime,
+body.ember-loaded .main-playbackBar-totalTime,
+body.ember-loaded [class*="playback-bar"] [data-testid*="progress"],
+body.ember-loaded [class*="playback-bar"] [data-testid*="duration"],
+body.ember-loaded [class*="playbackBar"] > span,
+body.ember-loaded [class*="playbackBar"] > div > span,
+body.ember-loaded [class*="PlaybackBar"] span,
+body.ember-loaded [class*="progress-time"],
+body.ember-loaded [class*="progressTime"],
+body.ember-loaded [class*="totalTime"],
+body.ember-loaded [class*="duration-time"],
+body.ember-loaded [class*="playback-bar__progress-time"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* === 5. CANVAS === */
+#ember-waveform {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: -4px !important;
+  width: 100% !important;
+  height: 32px !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  display: block !important;
+  background: transparent !important;
+}
+
+/* === 6. SEEK OVERLAY === */
+#ember-seek-overlay {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: -4px !important;
+  width: 100% !important;
+  height: 32px !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  background: transparent !important;
+}
+
+/* === 7. PLAYBACK CONTROLS === */
+[class*="player-controls"],
+.player-controls__buttons {
+  margin-top: 6px !important;
+}
+
+
+.main-playPauseButton-button,
+[class*="playPauseButton"] {
+  overflow: visible !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+[data-testid="control-button-playpause"],
+button[data-testid="control-button-playpause"] {
+  --background-base: #FF3D00 !important;
+  --background-highlight: #FF5722 !important;
+  --background-press: #E64A19 !important;
+  --text-base: #FFFFFF !important;
+  background-color: #FF3D00 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 0 16px rgba(255, 61, 0, 0.7) !important;
+  color: #FFFFFF !important;
+  cursor: pointer !important;
+  transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1.5), box-shadow 0.2s ease, background-color 0.2s ease !important;
+  overflow: visible !important;
+}
+[data-testid="control-button-playpause"]:hover,
+button[data-testid="control-button-playpause"]:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 24px rgba(255, 61, 0, 0.9) !important;
+  background-color: #FF5722 !important;
+}
+[data-testid="control-button-playpause"]:active,
+button[data-testid="control-button-playpause"]:active {
+  transform: scale(0.95) !important;
+  box-shadow: 0 0 10px rgba(255, 61, 0, 0.5) !important;
+}
+[data-testid="control-button-playpause"] svg {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+/* === 8. OTHER CONTROLS === */
+[data-testid="now-playing-bar"] button {
+  cursor: pointer !important;
+}
+[data-testid="now-playing-bar"] button:not([data-testid="control-button-playpause"]) {
+  background: transparent !important;
+  color: var(--spice-subtext);
+  transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease !important;
+}
+[data-testid="now-playing-bar"] button:not([data-testid="control-button-playpause"]):hover {
+  color: #FF3D00 !important;
+  transform: scale(1.1) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 61, 0, 0.6)) !important;
+}
+[data-testid="control-button-shuffle"][aria-checked="true"],
+[data-testid="control-button-repeat"][aria-checked="true"] {
+  color: #FF3D00 !important;
+  filter: drop-shadow(0 0 4px rgba(255, 61, 0, 0.4)) !important;
+}
+
+/* === 9. SIDEBAR === */
+[data-testid="nav-bar"] { background-color: #0C0C0C; }
+[data-testid="nav-bar"] a { color: var(--spice-subtext); transition: color 0.2s ease, background 0.2s ease, padding-left 0.2s ease; }
+[data-testid="nav-bar"] a:hover { background: linear-gradient(90deg, rgba(255,61,0,0.1) 0%, transparent 100%); color: var(--spice-text); padding-left: 12px; }
+[data-testid="nav-bar"] [aria-current="page"] { color: #FF3D00 !important; font-weight: bold; }
+
+/* === 10. TRACK LIST === */
+[data-testid="tracklist-row"] { border-radius: 6px; transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+[data-testid="tracklist-row"]:hover { background: rgba(255,61,0,0.07); transform: scale(1.01); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+[data-testid="tracklist-row"][aria-selected="true"] { background: linear-gradient(90deg, rgba(255,61,0,0.12) 0%, transparent 100%); border-left: 3px solid #FF3D00; }
+
+/* === 11. VOLUME === */
+[data-testid="volume-bar"] [class*="foreground"] { background: #FF3D00 !important; }
+[data-testid="volume-bar"] [class*="background"] { background: rgba(255,61,0,0.2) !important; }
+[data-testid="volume-bar"] [class*="handle"] { background: #FF3D00 !important; }
+
+/* === 12. VISUAL POLISH === */
+[class*="CardImage"] img { border-radius: 8px; transition: transform 0.2s ease; }
+[class*="CardImage"] img:hover { transform: scale(1.04); }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,61,0,0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,61,0,0.7); }
+[data-testid="add-button"][aria-checked="true"] { color: #FF3D00 !important; }
+[data-testid="add-button"][aria-checked="true"] svg { fill: #FF3D00 !important; }
+[data-testid="context-menu"] { background: #1A1A1A !important; border: 1px solid rgba(255,61,0,0.12); border-radius: 8px; }
+[data-testid="now-playing-widget"] img { border-radius: 6px; box-shadow: 0 0 10px rgba(255,61,0,0.2); }
