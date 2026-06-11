@@ -1,0 +1,10 @@
+{
+  "name": "Ember",
+  "description": "A premium AMOLED theme with a top-mounted player and an animated dragon seekbar.",
+  "preview": "assets/preview1.png",
+  "usercss": "user.css",
+  "schemes": "color.ini",
+  "include": [
+    "theme.js"
+  ]
+}
