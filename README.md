@@ -1,134 +1,96 @@
 <div align="center">
+  <img src="https://raw.githubusercontent.com/spicetify/spicetify-cli/master/assets/icon.png" width="100" />
+  <h1>🔥 Ember</h1>
+  
+  A completely reimagined [Spicetify](https://github.com/spicetify/spicetify-cli) theme for Spotify featuring a **top-mounted player** and a custom **animated dragon seekbar**.
 
-# 🔥 Ember
+  [![Spicetify](https://img.shields.io/badge/Spicetify-Compatible-FF3D00?style=for-the-badge&logo=spotify&logoColor=white)](https://spicetify.app)
+  [![License](https://img.shields.io/badge/License-MIT-CC2000?style=for-the-badge)](LICENSE)
+  [![Version](https://img.shields.io/badge/Version-2.0.0-FF5722?style=for-the-badge)](https://github.com/Expir3d/spotify-ember-theme)
 
-### *Unleash the fire within your music*
-
-<p align="center">
-  <img src="assets/preview1.png" width="48%">
-  <img src="assets/preview2.png" width="48%">
-</p>
-
-![Spicetify](https://img.shields.io/badge/Spicetify-Compatible-FF3D00?style=flat-square&logo=spotify&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-CC2000?style=flat-square)
-![Version](https://img.shields.io/badge/Version-2.0.0-FF5722?style=flat-square)
-
+  **Consider starring us and suggesting new features!**
 </div>
 
 ---
 
-## Overview
+## 📸 First Look
 
-**Ember** is a premium [Spicetify](https://spicetify.app) theme built for Spotify.  
-It pairs a **pure AMOLED black** base with **burnt orange-red** fire accents (`#FF3D00`), creating a bold, immersive listening experience — easy on OLED screens, striking everywhere else.
-
-### 🌟 Key Innovation: Top-Mounted Player & Dragon Seekbar
-Ember completely reimagines the Spotify layout:
-- **Top-Mounted Player**: The player bar has been moved from the bottom to the very top of the window, acting as a sleek, draggable header.
-- **Animated Dragon Seekbar**: A custom, audio-reactive animated canvas seekbar that replaces the standard Spotify progress bar. It features an undulating fire dragon tail, interactive glowing particles, and a sleek flame arrowhead!
+<p align="center">
+  <img src="assets/preview1.png" width="49%">
+  <img src="assets/preview2.png" width="49%">
+</p>
 
 ---
 
-## Features
+## ⚡ Features
 
-- 🖤 **True AMOLED black** — `#080808` main, `#0C0C0C` sidebar
-- 🔥 **Burnt orange-red accents** — `#FF3D00` throughout: buttons, tabs, scrollbar
-- 🐉 **Custom Animated Seekbar** — Floating dragon-tail waveform with live particles
-- 🔝 **Top Player Bar** — Fully functional top-mounted playback controls
-- 🃏 **Card hover effects** — Smooth `scale(1.03)` lift with ember shadow
-- ❤️ **Fire heart icon** — Liked tracks pulse in `#FF3D00`
-- 📜 **Slim ember scrollbar** — 4 px wide, full accent color
-- ⚡ **Silky transitions** — Every interaction animated seamlessly
+Unlike standard themes that only change colors, Ember physically restructures your Spotify layout:
 
----
-
-## Installation
-
-### Prerequisites
-
-- [Spotify](https://www.spotify.com/download) desktop app installed  
-- [Spicetify CLI](https://spicetify.app/docs/getting-started) installed and configured
+- 🔝 **Top-Mounted Player**: The playback bar is moved to the very top, acting as a sleek, draggable window header.
+- 🐉 **Animated Dragon Seekbar**: A custom, audio-reactive canvas seekbar that features an undulating fire dragon tail and glowing embers (particles).
+- 🖤 **True AMOLED Black**: `#080808` main backgrounds save energy on OLED screens and provide insane contrast.
+- 🔥 **Burnt Orange Accents**: Stunning `#FF3D00` accents across all buttons, tabs, and scrollbars.
+- 🃏 **Interactive Hover States**: Smooth `scale(1.03)` card lifts and beautiful drop-shadows on interactive elements.
 
 ---
 
-### Step 1 — Copy theme files
+## 🛠️ Dependencies
 
-Locate your Spicetify Themes folder by running:
-```bash
-spicetify path userdata
+- Latest version of [Spicetify CLI](https://spicetify.app/docs/getting-started).
+- Latest version of the [Spotify Desktop Client](https://www.spotify.com/download).
+
+---
+
+## 📥 Installation
+
+### 🛍️ Spicetify Marketplace (Recommended)
+Simply install the [Spicetify Marketplace](https://github.com/spicetify/spicetify-marketplace). Once installed, open the Marketplace tab in Spotify, search for `Ember`, and click the install button!
+
+### 💻 Manual Installation
+
+<details>
+  <summary>Click here for step-by-step manual installation instructions</summary>
+  
+  1. Find your Spicetify Themes folder by running this in your terminal:
+     ```bash
+     spicetify path userdata
+     ```
+  2. Navigate to the `Themes` folder inside that directory and create a new folder named `Ember`.
+  3. Clone or download this repository, and copy all files (`color.ini`, `user.css`, `theme.js`, `manifest.json`) into the `Ember` folder.
+  4. Apply the theme using the Spicetify CLI:
+     ```bash
+     spicetify config current_theme Ember
+     spicetify config color_scheme Base
+     spicetify config inject_theme_js 1
+     spicetify apply
+     ```
+     *(Note: `inject_theme_js 1` is strictly required for the Animated Dragon Seekbar to work!)*
+</details>
+
+---
+
+## 🎨 Customization
+
+Ember uses standard CSS variables. You can easily modify the base colors by editing the `color.ini` file in the theme directory.
+
+```ini
+[Base]
+main               = 080808
+sidebar            = 0C0C0C
+player             = 0F0F0F
+button             = FF3D00
 ```
-Navigate to the `Themes` folder inside that directory, and create a new folder called **`Ember`**.
-
-Place the following files inside `Themes/Ember/`:
-- `color.ini`
-- `user.css`
-- `theme.js`
+*After saving changes, simply run `spicetify apply` again.*
 
 ---
 
-### Step 2 — Apply the theme
+## 🤝 Contributing
 
-```bash
-spicetify config current_theme Ember
-spicetify config color_scheme Base
-```
-
-### Step 3 — Enable Custom JavaScript *(Required for Dragon Seekbar)*
-
-The `theme.js` file powers the animated seekbar and the custom top-mounted controls. You must inject it:
-
-```bash
-spicetify config inject_theme_js 1
-spicetify apply
-```
-
----
-
-## File Reference
-
-| File | Purpose |
-|------|---------|
-| `color.ini` | Defines the color palette |
-| `user.css` | All visual styling, top-player layout, hover effects, AMOLED backgrounds |
-| `theme.js` | Animated dragon seekbar canvas, custom API event bindings, control routing |
-
----
-
-## Compatibility
-
-Tested against **Spicetify 2.x+** and latest **Spotify Desktop**.  
-*AMOLED black backgrounds look best on OLED monitors and mobile mirrors.*
-
----
-
-## License
-
-MIT License
-
-Copyright (c) 2024 Ember Theme
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Expir3d/spotify-ember-theme/issues).
 
 ---
 
 <div align="center">
-
-Made with 🔥 for music that burns
-
+  <p>Made with 🔥 for music that burns</p>
+  <p>&copy; 2024 Ember Theme</p>
 </div>
