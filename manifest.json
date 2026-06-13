@@ -1,9 +1,16 @@
 {
   "name": "Ember",
   "description": "A premium AMOLED theme with a top-mounted player and an animated dragon seekbar.",
-  "preview": "assets/preview1.png",
+  "preview": "assets/preview3.png",
+  "readme": "README.md",
   "usercss": "user.css",
   "schemes": "color.ini",
+  "authors": [
+    {
+      "name": "Expir3d",
+      "url": "https://github.com/Expir3d"
+    }
+  ],
   "include": [
     "theme.js"
   ]
