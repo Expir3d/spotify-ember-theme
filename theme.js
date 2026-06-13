@@ -233,10 +233,20 @@
     }
 
     var drag = false;
-    ov.addEventListener("mousedown", function(e) { drag = true; seekTo(ratio(e.clientX)); });
-    window.addEventListener("mousemove", function(e) { if (drag) seekTo(ratio(e.clientX)); });
+    var seekOverrideRatio = -1;
+    var seekOverrideTime = 0;
+    var SEEK_OVERRIDE_MS = 200;
+
+    function seekWithOverride(r) {
+      seekOverrideRatio = r;
+      seekOverrideTime = Date.now();
+      seekTo(r);
+    }
+
+    ov.addEventListener("mousedown", function(e) { drag = true; seekWithOverride(ratio(e.clientX)); });
+    window.addEventListener("mousemove", function(e) { if (drag) seekWithOverride(ratio(e.clientX)); });
     window.addEventListener("mouseup", function() { drag = false; });
-    ov.addEventListener("click", function(e) { seekTo(ratio(e.clientX)); });
+    ov.addEventListener("click", function(e) { seekWithOverride(ratio(e.clientX)); });
 
     function dragonY(x, t) {
       if (x < startX || x > bodyEnd) return cY;
@@ -284,6 +294,14 @@
 
       var dur = getDuration(), cur = getProgress();
       var prog = Math.min(1, Math.max(0, cur / dur));
+
+      // Use visual override during seek transition
+      if (seekOverrideRatio >= 0 && (Date.now() - seekOverrideTime) < SEEK_OVERRIDE_MS) {
+        prog = seekOverrideRatio;
+      } else {
+        seekOverrideRatio = -1;
+      }
+
       var t = Date.now() / 1000;
       var cx = startX + (bodyEnd - startX) * prog;
       var cy = dragonY(cx, t);
