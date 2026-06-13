@@ -78,6 +78,7 @@
 }
 
 /* === 4. HIDE NATIVE SEEKBAR === */
+/* Progress bar track */
 body.ember-loaded [data-testid="playback-progressbar"],
 body.ember-loaded .main-playbackBar-playbackBar,
 body.ember-loaded [class*="playbackBar-playbackBar"] {
@@ -87,6 +88,7 @@ body.ember-loaded [class*="playbackBar-playbackBar"] {
   overflow: hidden !important;
 }
 
+/* Timestamps */
 body.ember-loaded .main-playbackBar-progressTime,
 body.ember-loaded .main-playbackBar-totalTime,
 body.ember-loaded [class*="playback-bar"] [data-testid*="progress"],
@@ -106,26 +108,26 @@ body.ember-loaded [class*="playback-bar__progress-time"] {
   overflow: hidden !important;
 }
 
-/* === 5. DRAGON CANVAS — 50px tall, bottom -9px === */
+/* === 5. CANVAS === */
 #ember-waveform {
   position: absolute !important;
   left: 0 !important;
-  bottom: -9px !important;
+  bottom: -4px !important;
   width: 100% !important;
-  height: 50px !important;
+  height: 32px !important;
   z-index: 1 !important;
   pointer-events: none !important;
   display: block !important;
   background: transparent !important;
 }
 
-/* === 6. SEEK OVERLAY — matches canvas === */
+/* === 6. SEEK OVERLAY === */
 #ember-seek-overlay {
   position: absolute !important;
   left: 0 !important;
-  bottom: -9px !important;
+  bottom: -4px !important;
   width: 100% !important;
-  height: 50px !important;
+  height: 32px !important;
   z-index: 2 !important;
   pointer-events: auto !important;
   cursor: pointer !important;
@@ -137,6 +139,7 @@ body.ember-loaded [class*="playback-bar__progress-time"] {
 .player-controls__buttons {
   margin-top: 6px !important;
 }
+
 
 .main-playPauseButton-button,
 [class*="playPauseButton"] {
@@ -181,7 +184,6 @@ button[data-testid="control-button-playpause"]:active {
   fill: #FFFFFF !important;
   color: #FFFFFF !important;
 }
-
 /* === 8. OTHER CONTROLS === */
 [data-testid="now-playing-bar"] button {
   cursor: pointer !important;
@@ -216,12 +218,12 @@ button[data-testid="control-button-playpause"]:active {
 /* === 11. VOLUME === */
 [data-testid="volume-bar"] [class*="foreground"] { background: #FF3D00 !important; }
 [data-testid="volume-bar"] [class*="background"] { background: rgba(255,61,0,0.2) !important; }
-[data-testid="volume-bar"] [class*="handle"]     { background: #FF3D00 !important; }
+[data-testid="volume-bar"] [class*="handle"] { background: #FF3D00 !important; }
 
 /* === 12. VISUAL POLISH === */
 [class*="CardImage"] img { border-radius: 8px; transition: transform 0.2s ease; }
 [class*="CardImage"] img:hover { transform: scale(1.04); }
-::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,61,0,0.4); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,61,0,0.7); }
