@@ -183,7 +183,8 @@
   // ============================================================
 
   var particles = [];
-  var MAX_P = 25;
+  var MAX_P = 35;
+  var frameCount = 0;
 
   function initDragonSeekbar() {
     var cc = document.querySelector('.main-nowPlayingBar-center, [class*="nowPlayingBar-center"]');
@@ -249,7 +250,22 @@
 
     function spawnP(mx) {
       var x = startX + Math.random() * (mx - startX);
-      return { x:x, y:dragonY(x,Date.now()/1000), vx:(Math.random()-0.5)*0.4, vy:-(Math.random()*0.8+0.3), life:30+Math.random()*30, maxLife:60, size:1+Math.random()*2 };
+      var isSpark = Math.random() < 0.7;
+      if (isSpark) {
+        return {
+          type: "spark", x: x, y: dragonY(x, Date.now() / 1000),
+          vx: (Math.random() - 0.5) * 3.0, vy: -(Math.random() * 1.5 + 1.5),
+          life: 20 + Math.random() * 15, maxLife: 35,
+          angle: Math.random() * Math.PI * 2, len: 3 + Math.random() * 5
+        };
+      } else {
+        return {
+          type: "wisp", x: x, y: dragonY(x, Date.now() / 1000),
+          vx: (Math.random() - 0.5) * 0.6, vy: -(Math.random() * 0.6 + 0.4),
+          life: 50 + Math.random() * 40, maxLife: 90,
+          seed: Math.random() * Math.PI * 2, h: 6 + Math.random() * 3
+        };
+      }
     }
 
     function fmt(ms) {
@@ -272,68 +288,153 @@
       var cx = startX + (bodyEnd - startX) * prog;
       var cy = dragonY(cx, t);
 
-      // Unplayed body
+      frameCount++;
+
+      // Unplayed body — subtle pulse
       if (cx < bodyEnd) {
+        var pulseA = Math.sin(t * 1.5) * 0.06 + 0.16;
         ctx.save(); ctx.beginPath(); ctx.moveTo(cx, cy);
         for (var x = Math.ceil(cx); x <= bodyEnd; x += 2) ctx.lineTo(x, dragonY(x, t));
-        ctx.strokeStyle = "rgba(255,61,0,0.22)"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
+        ctx.strokeStyle = "rgba(255,61,0," + pulseA.toFixed(3) + ")";
+        ctx.lineWidth = 1.5;
+        ctx.shadowBlur = 4; ctx.shadowColor = "rgba(255,61,0,0.3)";
+        ctx.stroke(); ctx.restore();
       }
 
-      // Played body
+      // Played body — 4-layer glow
       if (cx > startX) {
         ctx.save(); ctx.beginPath(); ctx.moveTo(startX, dragonY(startX, t));
         for (var x = startX + 2; x <= cx; x += 2) ctx.lineTo(x, dragonY(x, t));
+        // Layer 1: wide heat haze
+        ctx.strokeStyle = "rgba(255,30,0,0.06)"; ctx.lineWidth = 12;
+        ctx.shadowBlur = 0; ctx.stroke();
+        // Layer 2: deep glow
         ctx.strokeStyle = "rgba(139,0,0,0.5)"; ctx.lineWidth = 5.5;
         ctx.shadowBlur = 10; ctx.shadowColor = "#8B0000"; ctx.stroke();
+        // Layer 3: bright core
         ctx.strokeStyle = "#FF3D00"; ctx.lineWidth = 3;
-        ctx.shadowBlur = 6; ctx.shadowColor = "#FF3D00"; ctx.stroke();
-        ctx.strokeStyle = "#FFAA00"; ctx.lineWidth = 1.2; ctx.stroke();
+        ctx.shadowBlur = 14; ctx.shadowColor = "#FF3D00"; ctx.stroke();
+        // Layer 4: hot white center
+        ctx.strokeStyle = "#FFF0AA"; ctx.lineWidth = 1.2;
+        ctx.shadowBlur = 0; ctx.stroke();
         ctx.restore();
       }
 
-      // Dragon head — clean filled flame-arrow shape
+      // Dragon head — organic bezier serpent
       (function(hx, hy, g) {
         ctx.save();
+        var sc = g ? 1.3 : 1.0;
+        ctx.translate(hx, hy);
+        ctx.scale(sc, sc);
+
+        if (g) { ctx.shadowBlur = 20; ctx.shadowColor = "#FF3D00"; }
+
+        // Head shape with bezier curves
         ctx.beginPath();
-        // Sleek arrow-head / flame tip pointing right
-        ctx.moveTo(hx - 4, hy + 5);      // bottom-left of body connection
-        ctx.lineTo(hx + 6, hy + 3);      // lower jaw forward
-        ctx.lineTo(hx + 14, hy);          // snout tip
-        ctx.lineTo(hx + 6, hy - 3);      // upper jaw back
-        ctx.lineTo(hx + 3, hy - 7);      // small crest/ear
-        ctx.lineTo(hx - 1, hy - 4);      // back of head
-        ctx.lineTo(hx - 4, hy - 2);      // neck connection top
+        ctx.moveTo(-5, 3);                                          // neck bottom
+        ctx.bezierCurveTo(-3, 5, 2, 5, 6, 3);                     // lower jaw curve
+        ctx.bezierCurveTo(9, 2.2, 13, 1.5, 16, 0.8);              // lower jaw tip
+        ctx.lineTo(16, -0.8);                                      // mouth gap
+        ctx.bezierCurveTo(13, -1.5, 9, -2, 6, -3);                // upper jaw inner
+        ctx.bezierCurveTo(3, -4, 1, -5, -1, -5.5);                // upper skull
+        // Horn
+        ctx.bezierCurveTo(-1, -8, 1, -10, 3, -11);                // horn tip
+        ctx.bezierCurveTo(1, -9, -1, -7, -2, -5.5);               // horn return
+        ctx.bezierCurveTo(-4, -4.5, -5, -3, -5, -1);              // back of head
         ctx.closePath();
 
-        if (g) {
-          // Glowing when near end of song
-          ctx.shadowBlur = 14;
-          ctx.shadowColor = "#FF3D00";
-          ctx.fillStyle = "rgba(255, 61, 0, 0.5)";
-          ctx.fill();
-          ctx.strokeStyle = "#FFAA00";
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        } else {
-          // Normal: subtle filled shape
-          ctx.fillStyle = "rgba(255, 61, 0, 0.15)";
-          ctx.fill();
-          ctx.strokeStyle = "rgba(255, 61, 0, 0.4)";
-          ctx.lineWidth = 1.2;
+        var headGrad = ctx.createLinearGradient(-5, 0, 16, 0);
+        headGrad.addColorStop(0, g ? "rgba(255,61,0,0.7)" : "rgba(255,61,0,0.25)");
+        headGrad.addColorStop(1, g ? "rgba(255,140,0,0.9)" : "rgba(255,61,0,0.45)");
+        ctx.fillStyle = headGrad;
+        ctx.fill();
+        ctx.strokeStyle = g ? "#FFAA00" : "rgba(255,120,0,0.5)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Eye
+        ctx.beginPath();
+        ctx.arc(4, -2.5, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFAA00"; ctx.fill();
+        ctx.beginPath();
+        ctx.arc(4, -2.5, 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = "#FFFFFF"; ctx.fill();
+
+        // Flame breath from mouth
+        var angles = [-0.26, 0, 0.17, 0.35];
+        var lengths = [18, 22, 16, 12];
+        var widths = [2.0, 2.5, 1.5, 1.2];
+        for (var fi = 0; fi < angles.length; fi++) {
+          var flicker = Math.sin(t * 12 + fi * 2.5) * 3;
+          var fLen = lengths[fi] + flicker;
+          var fAngle = angles[fi] + Math.sin(t * 8 + fi) * 0.05;
+          var fx = 16, fy = 0;
+          var tipX = fx + Math.cos(fAngle) * fLen;
+          var tipY = fy + Math.sin(fAngle) * fLen;
+          var cpX = fx + Math.cos(fAngle) * fLen * 0.5;
+          var cpY = fy + Math.sin(fAngle) * fLen * 0.5 + (Math.sin(t * 10 + fi) * 1.5);
+
+          var flameGrad = ctx.createLinearGradient(fx, fy, tipX, tipY);
+          flameGrad.addColorStop(0, g ? "rgba(255,200,50,0.95)" : "rgba(255,61,0,0.9)");
+          flameGrad.addColorStop(0.6, "rgba(255,120,0,0.4)");
+          flameGrad.addColorStop(1, "rgba(255,200,0,0)");
+
+          ctx.beginPath();
+          ctx.moveTo(fx, fy);
+          ctx.quadraticCurveTo(cpX, cpY, tipX, tipY);
+          ctx.strokeStyle = flameGrad;
+          ctx.lineWidth = widths[fi];
+          ctx.lineCap = "round";
           ctx.stroke();
         }
+
         ctx.restore();
       })(bodyEnd, cY, prog > 0.95);
 
-      // Particles
+      // Particles — sparks and wisps
       particles = particles.filter(function(p) { return p.life > 0; });
       if (prog > 0.01 && prog < 0.99 && particles.length < MAX_P) particles.push(spawnP(cx));
       for (var j = 0; j < particles.length; j++) {
-        var p = particles[j]; p.x += p.vx; p.y += p.vy; p.life--;
+        var p = particles[j];
+        p.life--;
         var a = Math.max(0, p.life / p.maxLife);
-        ctx.save(); ctx.beginPath(); ctx.arc(p.x, p.y, p.size * a, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255," + Math.floor(100+Math.random()*100) + ",0," + (a*0.7) + ")";
-        ctx.shadowBlur = 4; ctx.shadowColor = "rgba(255,61,0,0.5)"; ctx.fill(); ctx.restore();
+
+        if (p.type === "spark") {
+          // Decelerate
+          p.vx *= 0.94; p.vy *= 0.94;
+          p.x += p.vx; p.y += p.vy;
+          // Draw as a short line segment
+          var r1 = Math.floor(255); var g1 = Math.floor(220 - (1 - a) * 160); var b1 = Math.floor(80 * a);
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x + Math.cos(p.angle) * p.len * a, p.y + Math.sin(p.angle) * p.len * a);
+          ctx.strokeStyle = "rgba(" + r1 + "," + g1 + "," + b1 + "," + (a * 0.85).toFixed(3) + ")";
+          ctx.lineWidth = 1.2;
+          ctx.lineCap = "round";
+          ctx.stroke();
+          ctx.restore();
+        } else {
+          // Wisp — wobble and drift
+          p.x += p.vx + Math.sin(frameCount * 0.15 + p.seed) * 0.3;
+          p.y += p.vy;
+          // Draw as a teardrop with radial gradient
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(Math.atan2(p.vy, p.vx) + Math.PI / 2);
+          var rg = ctx.createRadialGradient(0, 0, 0, 0, 0, p.h * a * 0.6);
+          rg.addColorStop(0, "rgba(255,100,0," + (0.8 * a).toFixed(3) + ")");
+          rg.addColorStop(0.5, "rgba(255,61,0," + (0.3 * a).toFixed(3) + ")");
+          rg.addColorStop(1, "rgba(255,61,0,0)");
+          ctx.beginPath();
+          // Teardrop: two bezier arcs
+          ctx.moveTo(0, -p.h * a * 0.5);
+          ctx.bezierCurveTo(2 * a, -p.h * a * 0.2, 2 * a, p.h * a * 0.2, 0, p.h * a * 0.5);
+          ctx.bezierCurveTo(-2 * a, p.h * a * 0.2, -2 * a, -p.h * a * 0.2, 0, -p.h * a * 0.5);
+          ctx.fillStyle = rg;
+          ctx.fill();
+          ctx.restore();
+        }
       }
 
       // Playhead
