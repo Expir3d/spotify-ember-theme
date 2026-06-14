@@ -236,17 +236,21 @@
     var seekOverrideRatio = -1;
     var seekOverrideTime = 0;
     var SEEK_OVERRIDE_MS = 200;
+    var lastSeekTime = 0;
 
     function seekWithOverride(r) {
+      var now = Date.now();
       seekOverrideRatio = r;
-      seekOverrideTime = Date.now();
-      seekTo(r);
+      seekOverrideTime = now;
+      if (now - lastSeekTime > 100) {
+        lastSeekTime = now;
+        seekTo(r);
+      }
     }
 
     ov.addEventListener("mousedown", function(e) { drag = true; seekWithOverride(ratio(e.clientX)); });
     window.addEventListener("mousemove", function(e) { if (drag) seekWithOverride(ratio(e.clientX)); });
     window.addEventListener("mouseup", function() { drag = false; });
-    ov.addEventListener("click", function(e) { seekWithOverride(ratio(e.clientX)); });
 
     function dragonY(x, t) {
       if (x < startX || x > bodyEnd) return cY;
