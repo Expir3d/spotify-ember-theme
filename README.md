@@ -6,7 +6,9 @@
 
   [![Spicetify](https://img.shields.io/badge/Spicetify-Compatible-FF3D00?style=for-the-badge&logo=spotify&logoColor=white)](https://spicetify.app)
   [![License](https://img.shields.io/badge/License-MIT-CC2000?style=for-the-badge)](LICENSE)
-  [![Version](https://img.shields.io/badge/Version-2.1.0-FF5722?style=for-the-badge)](https://github.com/Expir3d/spotify-ember-theme)
+  [![Version](https://img.shields.io/badge/Version-2.6.1-FF5722?style=for-the-badge)](https://github.com/Expir3d/spotify-ember-theme)
+
+  **Tested on:** Spotify 1.3.8 + Spicetify 2.46.4 (Windows, desktop install)
 
   **⭐ Star this repo if you like it! Suggestions and feature requests are welcome.**
 </div>
@@ -33,7 +35,7 @@ Unlike standard themes that only change colors, Ember physically restructures yo
 | Feature | Description |
 |---------|-------------|
 | 🔝 **Top-Mounted Player** | The playback bar is moved to the very top, acting as a sleek, draggable window header |
-| 🐉 **Dragon Seekbar** | A custom canvas seekbar with a bezier-curve serpent head, animated flame breath, a glowing eye, and a curved horn |
+| 🐉 **Dragon Seekbar** | A custom canvas seekbar with a detailed dragon head, ember glow, and a glowing eye |
 | 🔥 **Dual Particle System** | Fast-decelerating spark lines (70%) and slow, wobbling teardrop wisps (30%) rise from the played portion |
 | 🌋 **4-Layer Glow** | The played seekbar body radiates through a wide heat haze, deep crimson, bright orange, and a hot white-gold center |
 | 💫 **Pulsing Unplayed Line** | The unplayed portion subtly breathes with a sine-wave opacity pulse |
@@ -101,8 +103,27 @@ button             = FF3D00
 |------|---------|
 | `color.ini` | Defines the color palette for Spicetify |
 | `user.css` | All visual styling — top-player layout, AMOLED backgrounds, hover effects, scrollbars |
-| `theme.js` | Animated dragon seekbar canvas, bezier serpent head, dual particle system, control routing |
+| `theme.js` | Animated dragon seekbar canvas, detailed dragon head, dual particle system, control routing |
 | `manifest.json` | Marketplace metadata for automatic discovery |
+
+---
+
+## 📋 Changelog
+
+### v2.6.1 (2026-11-12)
+- Fixed the seekbar overlapping the dragon head and the control buttons: the body line and playhead now stop just before the head, the wave is flatter, and the line sits lower with a softer glow.
+
+### v2.6.0 (2026-11-12)
+- The dragon head is now a detailed picture asset instead of code-drawn shapes, so it reads as a proper dragon even at small size.
+
+### v2.5.0 (2026-11-11)
+- Redesigned dragon head from six bold shapes: cream horn, angular skull, big yellow eye with a heavy brow, roaring mouth, two fangs, and a throat ember.
+
+### v2.2.0 (2026-11-10)
+- Spotify 1.3.3–1.3.8 support: the top player bar and seekbar now anchor to stable `data-testid` selectors (`[data-testid="now-playing-bar"]`) instead of Spicetify-mapped class names, which Spotify renamed.
+- Fixed play/pause button rendering as a blank white circle in Spotify 1.3.8 Encore DOM; restored `#FF3D00` circle, `#FFFFFF` icon, hover/active scale, and ember glow.
+- Added a single-initialization guard so the dragon seekbar canvas and render loop initialize once.
+- Updated volume slider fill/thumb, active toggle states (`shuffle`, `repeat`, `lyrics`, `queue`), and left sidebar selectors for Spotify 1.3.8.
 
 ---
 

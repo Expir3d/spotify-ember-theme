@@ -1,6 +1,7 @@
 /* ============================================================
-   EMBER THEME
-   AMOLED Black + #FF3D00 Burnt Orange-Red
+   EMBER THEME — v2.2.0
+   AMOLED Black (#080808) + Burnt Orange-Red (#FF3D00)
+   Tested on: Spotify 1.3.8 + Spicetify 2.46.4
    ============================================================ */
 
 /* === 1. ROOT VARIABLES === */
@@ -21,10 +22,14 @@
   --spice-text:               #FFFFFF;
   --spice-subtext:            #A0A0A0;
   --spice-sidebar-text:       #FFFFFF;
+  --text-bright-accent:       #FF3D00;
 }
 
-/* === 2. PLAYER BAR AT TOP === */
-.Root__now-playing-bar {
+/* === 2. PLAYER BAR AT TOP (FIXED 96PX STRIP) === */
+/* !important required to override Spotify's bottom grid placement */
+[data-testid="now-playing-bar"],
+.Root__now-playing-bar,
+.ember-top-player {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
@@ -39,46 +44,51 @@
   -webkit-app-region: drag !important;
 }
 
-/* Ensure interactive elements are clickable */
+/* Ensure interactive elements inside the draggable header remain clickable */
+[data-testid="now-playing-bar"] button,
+[data-testid="now-playing-bar"] a,
+[data-testid="now-playing-bar"] input,
+[data-testid="now-playing-bar"] [role="button"],
+[data-testid="now-playing-bar"] [role="slider"],
+[data-testid="now-playing-bar"] [data-testid],
+[data-testid="now-playing-bar"] svg,
 .Root__now-playing-bar button,
-.Root__now-playing-bar a,
-.Root__now-playing-bar input,
-.Root__now-playing-bar [role="button"],
-.Root__now-playing-bar [data-testid],
-.Root__now-playing-bar svg,
+.ember-top-player button,
 .main-nowPlayingBar-left *,
 #ember-seek-overlay {
   -webkit-app-region: no-drag !important;
 }
 
-/* Push main content down */
+/* Push main viewport down below the 96px top player bar.
+   Only .Root__top-container belongs here. */
 .Root__top-container {
   margin-top: 96px !important;
   height: calc(100vh - 96px) !important;
 }
 
+/* Container surface only — never set height on this rule */
 [data-testid="now-playing-bar"],
 [class*="nowPlayingBar-container"] {
   background-color: #0A0A0A !important;
-  height: 100% !important;
 }
 
 /* === 3. CENTER CONTAINER === */
 .main-nowPlayingBar-center,
-[class*="nowPlayingBar-center"] {
+[class*="nowPlayingBar-center"],
+.ember-center {
   position: relative !important;
   height: 100% !important;
   overflow: visible !important;
 }
 
-/* === 3b. RIGHT CONTAINER === */
+/* === 3b. RIGHT CONTAINER (WINDOW CONTROLS CLEARANCE) === */
 .main-nowPlayingBar-right,
-[class*="nowPlayingBar-right"] {
+[class*="nowPlayingBar-right"],
+[data-testid="now-playing-bar"] > div > div:last-child {
   padding-right: 140px !important;
 }
 
-/* === 4. HIDE NATIVE SEEKBAR === */
-/* Progress bar track */
+/* === 4. HIDE NATIVE SEEKBAR & TIMESTAMPS === */
 body.ember-loaded [data-testid="playback-progressbar"],
 body.ember-loaded .main-playbackBar-playbackBar,
 body.ember-loaded [class*="playbackBar-playbackBar"] {
@@ -88,7 +98,8 @@ body.ember-loaded [class*="playbackBar-playbackBar"] {
   overflow: hidden !important;
 }
 
-/* Timestamps */
+body.ember-loaded [data-testid="playback-position"],
+body.ember-loaded [data-testid="playback-duration"],
 body.ember-loaded .main-playbackBar-progressTime,
 body.ember-loaded .main-playbackBar-totalTime,
 body.ember-loaded [class*="playback-bar"] [data-testid*="progress"],
@@ -108,7 +119,7 @@ body.ember-loaded [class*="playback-bar__progress-time"] {
   overflow: hidden !important;
 }
 
-/* === 5. CANVAS === */
+/* === 5. DRAGON CANVAS & SEEK OVERLAY === */
 #ember-waveform {
   position: absolute !important;
   left: 0 !important;
@@ -121,7 +132,6 @@ body.ember-loaded [class*="playback-bar__progress-time"] {
   background: transparent !important;
 }
 
-/* === 6. SEEK OVERLAY === */
 #ember-seek-overlay {
   position: absolute !important;
   left: 0 !important;
@@ -134,33 +144,37 @@ body.ember-loaded [class*="playback-bar__progress-time"] {
   background: transparent !important;
 }
 
-/* === 7. PLAYBACK CONTROLS === */
+/* === 6. PLAY/PAUSE BUTTON (P0 FIX FOR SPOTIFY 1.3.8 ENCORE DOM) === */
+[data-testid="player-controls"],
 [class*="player-controls"],
 .player-controls__buttons {
   margin-top: 6px !important;
 }
 
-
-.main-playPauseButton-button,
-[class*="playPauseButton"] {
-  overflow: visible !important;
-  background: transparent !important;
-  border: none !important;
-}
-
+/* Outer button AND inner Encore ButtonInner span both receive #FF3D00 tokens
+   so the child .encore-inverted-light-set / .encore-bright-accent-set span
+   cannot paint a white disc behind the white SVG icon. */
 [data-testid="control-button-playpause"],
-button[data-testid="control-button-playpause"] {
+button[data-testid="control-button-playpause"],
+.ember-playpause {
   --background-base: #FF3D00 !important;
   --background-highlight: #FF5722 !important;
-  --background-press: #E64A19 !important;
+  --background-press: #CC2000 !important;
+  --background-elevated-base: #FF3D00 !important;
+  --background-elevated-highlight: #FF5722 !important;
+  --background-elevated-press: #CC2000 !important;
   --text-base: #FFFFFF !important;
+  --text-subdued: #FFFFFF !important;
+  background: #FF3D00 !important;
   background-color: #FF3D00 !important;
+  border: none !important;
   border-radius: 50% !important;
   width: 32px !important;
   height: 32px !important;
   min-width: 32px !important;
   min-height: 32px !important;
-  display: flex !important;
+  padding: 0 !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   box-shadow: 0 0 16px rgba(255, 61, 0, 0.7) !important;
@@ -169,65 +183,303 @@ button[data-testid="control-button-playpause"] {
   transition: transform 0.2s cubic-bezier(0.3, 0, 0, 1.5), box-shadow 0.2s ease, background-color 0.2s ease !important;
   overflow: visible !important;
 }
+
+[data-testid="control-button-playpause"] > span,
+[data-testid="control-button-playpause"] [class*="ButtonInner"],
+[data-testid="control-button-playpause"] [class*="encore-"],
+.ember-playpause > span {
+  --background-base: #FF3D00 !important;
+  --background-highlight: #FF5722 !important;
+  --background-press: #CC2000 !important;
+  --text-base: #FFFFFF !important;
+  background: #FF3D00 !important;
+  background-color: #FF3D00 !important;
+  color: #FFFFFF !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
 [data-testid="control-button-playpause"]:hover,
-button[data-testid="control-button-playpause"]:hover {
+button[data-testid="control-button-playpause"]:hover,
+.ember-playpause:hover {
   transform: scale(1.1) !important;
   box-shadow: 0 0 24px rgba(255, 61, 0, 0.9) !important;
+  background: #FF5722 !important;
   background-color: #FF5722 !important;
 }
+
+[data-testid="control-button-playpause"]:hover > span,
+[data-testid="control-button-playpause"]:hover [class*="ButtonInner"],
+[data-testid="control-button-playpause"]:hover [class*="encore-"],
+.ember-playpause:hover > span {
+  background: #FF5722 !important;
+  background-color: #FF5722 !important;
+}
+
 [data-testid="control-button-playpause"]:active,
-button[data-testid="control-button-playpause"]:active {
+button[data-testid="control-button-playpause"]:active,
+.ember-playpause:active {
   transform: scale(0.95) !important;
   box-shadow: 0 0 10px rgba(255, 61, 0, 0.5) !important;
+  background: #CC2000 !important;
+  background-color: #CC2000 !important;
 }
-[data-testid="control-button-playpause"] svg {
+
+[data-testid="control-button-playpause"]:active > span,
+[data-testid="control-button-playpause"]:active [class*="ButtonInner"],
+[data-testid="control-button-playpause"]:active [class*="encore-"],
+.ember-playpause:active > span {
+  background: #CC2000 !important;
+  background-color: #CC2000 !important;
+}
+
+[data-testid="control-button-playpause"] svg,
+[data-testid="control-button-playpause"] svg path,
+.ember-playpause svg,
+.ember-playpause svg path {
   fill: #FFFFFF !important;
   color: #FFFFFF !important;
+  stroke: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
-/* === 8. OTHER CONTROLS === */
+
+[data-testid="control-button-playpause"] svg,
+.ember-playpause svg {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* === 7. SECONDARY PLAYER CONTROLS & ACTIVE STATES === */
 [data-testid="now-playing-bar"] button {
   cursor: pointer !important;
 }
+
 [data-testid="now-playing-bar"] button:not([data-testid="control-button-playpause"]) {
   background: transparent !important;
   color: var(--spice-subtext);
   transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease !important;
 }
+
 [data-testid="now-playing-bar"] button:not([data-testid="control-button-playpause"]):hover {
   color: #FF3D00 !important;
+  --text-base: #FF3D00 !important;
+  --text-subdued: #FF3D00 !important;
   transform: scale(1.1) !important;
   filter: drop-shadow(0 0 8px rgba(255, 61, 0, 0.6)) !important;
 }
-[data-testid="control-button-shuffle"][aria-checked="true"],
-[data-testid="control-button-repeat"][aria-checked="true"] {
+
+[data-testid="now-playing-bar"] button:not([data-testid="control-button-playpause"]):hover svg,
+[data-testid="now-playing-bar"] button:not([data-testid="control-button-playpause"]):hover svg path {
+  fill: currentColor !important;
   color: #FF3D00 !important;
-  filter: drop-shadow(0 0 4px rgba(255, 61, 0, 0.4)) !important;
 }
 
-/* === 9. SIDEBAR === */
-[data-testid="nav-bar"] { background-color: #0C0C0C; }
-[data-testid="nav-bar"] a { color: var(--spice-subtext); transition: color 0.2s ease, background 0.2s ease, padding-left 0.2s ease; }
-[data-testid="nav-bar"] a:hover { background: linear-gradient(90deg, rgba(255,61,0,0.1) 0%, transparent 100%); color: var(--spice-text); padding-left: 12px; }
-[data-testid="nav-bar"] [aria-current="page"] { color: #FF3D00 !important; font-weight: bold; }
+/* Active toggle states: Shuffle, Repeat, Lyrics, Queue, Now Playing View, Devices */
+[data-testid="control-button-shuffle"][aria-checked="true"],
+[data-testid="control-button-repeat"][aria-checked="true"],
+[data-testid="now-playing-bar"] button[aria-checked="true"]:not([data-testid="control-button-playpause"]),
+[data-testid="now-playing-bar"] button[aria-pressed="true"]:not([data-testid="control-button-playpause"]),
+[data-testid="now-playing-bar"] button[data-active="true"]:not([data-testid="control-button-playpause"]) {
+  color: #FF3D00 !important;
+  --text-base: #FF3D00 !important;
+  --text-subdued: #FF3D00 !important;
+  --text-bright-accent: #FF3D00 !important;
+  filter: drop-shadow(0 0 6px rgba(255, 61, 0, 0.55)) !important;
+}
+
+[data-testid="control-button-shuffle"][aria-checked="true"] svg,
+[data-testid="control-button-repeat"][aria-checked="true"] svg,
+[data-testid="now-playing-bar"] button[aria-checked="true"]:not([data-testid="control-button-playpause"]) svg,
+[data-testid="now-playing-bar"] button[aria-pressed="true"]:not([data-testid="control-button-playpause"]) svg,
+[data-testid="now-playing-bar"] button[data-active="true"]:not([data-testid="control-button-playpause"]) svg {
+  fill: currentColor !important;
+  color: #FF3D00 !important;
+}
+
+/* Smart Shuffle (Spotify 1.3.8): the shuffle button has NO
+   data-testid="control-button-shuffle". It is a Smart Shuffle toggle
+   with aria-label "Enable/Disable Smart Shuffle ..." and its ON state
+   is aria-expanded="true" (not aria-checked). The generic
+   aria-checked rule above therefore never matches it, and it stayed
+   grey rgb(160,160,160) when on. Target it by aria-label + aria-expanded.
+   Scoped to Shuffle labels only, so no other button is affected. */
+[data-testid="now-playing-bar"] button[aria-label*="Shuffle"][aria-expanded="true"],
+[data-testid="now-playing-bar"] button[aria-label*="Shuffle"][aria-checked="true"] {
+  color: #FF3D00 !important;
+  --text-base: #FF3D00 !important;
+  --text-subdued: #FF3D00 !important;
+  --text-bright-accent: #FF3D00 !important;
+  filter: drop-shadow(0 0 6px rgba(255, 61, 0, 0.55)) !important;
+}
+
+[data-testid="now-playing-bar"] button[aria-label*="Shuffle"][aria-expanded="true"] svg,
+[data-testid="now-playing-bar"] button[aria-label*="Shuffle"][aria-expanded="true"] svg path,
+[data-testid="now-playing-bar"] button[aria-label*="Shuffle"][aria-checked="true"] svg {
+  fill: #FF3D00 !important;
+  color: #FF3D00 !important;
+}
+
+[data-testid="now-playing-bar"] button[aria-checked="true"]::after,
+[data-testid="now-playing-bar"] button[aria-pressed="true"]::after,
+[data-testid="now-playing-bar"] button[data-active="true"]::after {
+  background-color: #FF3D00 !important;
+  box-shadow: 0 0 6px rgba(255, 61, 0, 0.8) !important;
+}
+
+/* === 8. VOLUME BAR (SPOTIFY 1.3.8 PROGRESS-BAR STRUCTURE) === */
+[data-testid="volume-bar"],
+[data-testid="volume-bar"] [data-testid="progress-bar"] {
+  --fg-color: #FF3D00 !important;
+  --is-active-fg-color: #FF5722 !important;
+  --bg-color: rgba(255, 61, 0, 0.22) !important;
+  --background-base: #FF3D00 !important;
+}
+
+[data-testid="volume-bar"] [data-testid="progress-bar-background"],
+[data-testid="volume-bar"] [class*="background"] {
+  background-color: rgba(255, 61, 0, 0.22) !important;
+  border-radius: 4px !important;
+}
+
+/* Keep the clip wrapper transparent so only the shifted child fill bar is painted */
+[data-testid="volume-bar"] [data-testid="progress-bar-background"] > div {
+  background: transparent !important;
+}
+
+/* Volume fill bar + ember glow */
+[data-testid="volume-bar"] [data-testid="progress-bar-background"] > div > div,
+[data-testid="volume-bar"] [data-testid="progress-bar-background"] div:empty,
+[data-testid="volume-bar"] [class*="foreground"] {
+  background: #FF3D00 !important;
+  background-color: #FF3D00 !important;
+  box-shadow: 0 0 8px rgba(255, 61, 0, 0.6) !important;
+  border-radius: 4px !important;
+}
+
+[data-testid="volume-bar"]:hover [data-testid="progress-bar-background"] > div > div,
+[data-testid="volume-bar"]:hover [data-testid="progress-bar-background"] div:empty,
+[data-testid="volume-bar"]:hover [class*="foreground"] {
+  background: #FF5722 !important;
+  background-color: #FF5722 !important;
+  box-shadow: 0 0 12px rgba(255, 61, 0, 0.85) !important;
+}
+
+/* Volume slider handle / knob */
+[data-testid="volume-bar"] [data-testid="progress-bar"] > div:not([data-testid="progress-bar-background"]),
+[data-testid="volume-bar"] [role="slider"],
+[data-testid="volume-bar"] [class*="handle"] {
+  background: #FF3D00 !important;
+  background-color: #FF3D00 !important;
+  box-shadow: 0 0 10px rgba(255, 61, 0, 0.8) !important;
+}
+
+/* === 9. LEFT SIDEBAR (RETARGETED FOR SPOTIFY 1.3.8) === */
+/* [data-testid="nav-bar"] is missing in Spotify 1.3.8; retargeted to
+   #Desktop_LeftSidebar_Id, .Root__nav-bar, and nav[aria-label="Main"]. */
+#Desktop_LeftSidebar_Id,
+.Root__nav-bar,
+nav[aria-label="Main"] {
+  background-color: #0C0C0C;
+}
+
+#Desktop_LeftSidebar_Id a,
+.Root__nav-bar a,
+nav[aria-label="Main"] a,
+[data-testid="rootlist-item"] {
+  color: var(--spice-subtext);
+  border-radius: 6px;
+  transition: color 0.2s ease, background 0.2s ease, padding-left 0.2s ease;
+}
+
+#Desktop_LeftSidebar_Id a:hover,
+.Root__nav-bar a:hover,
+nav[aria-label="Main"] a:hover,
+[data-testid="rootlist-item"]:hover {
+  background: linear-gradient(90deg, rgba(255, 61, 0, 0.1) 0%, transparent 100%);
+  color: var(--spice-text);
+  padding-left: 12px;
+}
+
+#Desktop_LeftSidebar_Id [aria-current="page"],
+.Root__nav-bar [aria-current="page"],
+nav[aria-label="Main"] [aria-current="page"] {
+  color: #FF3D00 !important;
+  font-weight: bold;
+}
 
 /* === 10. TRACK LIST === */
-[data-testid="tracklist-row"] { border-radius: 6px; transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
-[data-testid="tracklist-row"]:hover { background: rgba(255,61,0,0.07); transform: scale(1.01); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-[data-testid="tracklist-row"][aria-selected="true"] { background: linear-gradient(90deg, rgba(255,61,0,0.12) 0%, transparent 100%); border-left: 3px solid #FF3D00; }
+[data-testid="tracklist-row"] {
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-/* === 11. VOLUME === */
-[data-testid="volume-bar"] [class*="foreground"] { background: #FF3D00 !important; }
-[data-testid="volume-bar"] [class*="background"] { background: rgba(255,61,0,0.2) !important; }
-[data-testid="volume-bar"] [class*="handle"] { background: #FF3D00 !important; }
+[data-testid="tracklist-row"]:hover {
+  background: rgba(255, 61, 0, 0.07);
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
-/* === 12. VISUAL POLISH === */
-[class*="CardImage"] img { border-radius: 8px; transition: transform 0.2s ease; }
-[class*="CardImage"] img:hover { transform: scale(1.04); }
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,61,0,0.4); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,61,0,0.7); }
-[data-testid="add-button"][aria-checked="true"] { color: #FF3D00 !important; }
-[data-testid="add-button"][aria-checked="true"] svg { fill: #FF3D00 !important; }
-[data-testid="context-menu"] { background: #1A1A1A !important; border: 1px solid rgba(255,61,0,0.12); border-radius: 8px; }
-[data-testid="now-playing-widget"] img { border-radius: 6px; box-shadow: 0 0 10px rgba(255,61,0,0.2); }
+[data-testid="tracklist-row"][aria-selected="true"] {
+  background: linear-gradient(90deg, rgba(255, 61, 0, 0.12) 0%, transparent 100%);
+  border-left: 3px solid #FF3D00;
+}
+
+/* === 11. VISUAL POLISH & SCROLLBARS === */
+[class*="CardImage"] img {
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+[class*="CardImage"] img:hover {
+  transform: scale(1.04);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 61, 0, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 61, 0, 0.7);
+}
+
+[data-testid="add-button"][aria-checked="true"] {
+  color: #FF3D00 !important;
+}
+
+[data-testid="add-button"][aria-checked="true"] svg {
+  fill: #FF3D00 !important;
+}
+
+[data-testid="context-menu"] {
+  background: #1A1A1A !important;
+  border: 1px solid rgba(255, 61, 0, 0.12);
+  border-radius: 8px;
+}
+
+[data-testid="now-playing-widget"] img {
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(255, 61, 0, 0.2);
+}
